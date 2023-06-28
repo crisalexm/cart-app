@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { calculateTotal } from '../services/productServices';
+import { useNavigate } from 'react-router-dom';
 
 export const CartView = ({ handlerDelete, items }) => {
 
     const [total, setTotal] = useState(0);
-
+    const navigate = useNavigate();
     useEffect(()=>{
         setTotal(calculateTotal(items));
 
@@ -12,15 +13,16 @@ export const CartView = ({ handlerDelete, items }) => {
         //JSON.stringify convierte los objetos de javascript a string "Cadena"
         //Acá estoy indicando que el objeto "items" se almacene en la sesión, además lo debo pasar al componente inicial, en este caso CartApp.jsx
         // lo llamo con JSON.parse() para convertirlo a un objeto como sessionStorage.getItem('cart'), "Cart" es el identificador que le paso por aquí.
-        
-        sessionStorage.setItem('cart',JSON.stringify(items))
+
     }, [ items ])
 
     const onDeleteProduct = ( id ) => {
         console.log('Eliminando producto...')
         handlerDelete(id);
     }
-
+     const onCatalog = () => {
+        navigate('/catalog')
+     }
     return (
         <>
 
@@ -53,9 +55,8 @@ export const CartView = ({ handlerDelete, items }) => {
                     </tr>
                 </tfoot>
             </table>
+            <button className='btn btn-success' onClick={onCatalog}>Seguir comprando</button>
 
         </>
-
-
     )
 }
